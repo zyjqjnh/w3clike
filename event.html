@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body style="height: 2000px;">
+<div id="box" style="width: 100px; height: 100px; border: 1px solid #ccc;"></div>
+<a id="baidu" href="http://www.baidu.com">百度</a>
+<ul id="myLink">
+    <li id="goSomeWhere">Go some where !</li>
+    <li id="doSomething">Do something !</li>
+    <li id="sayHi">Say Hi !</li>
+</ul>
+<script type="text/javascript" src="EventTarget.js"></script>
+<script type="text/javascript" src="loadscript.js"></script>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript">
+    function handleMessage(event){
+        event.target.innerHTML = event.message;
+    }
+    var box = document.getElementById('box');
+    var target = new EventTarget();
+    target.addHandler('message',handleMessage);
+    target.fire({type:"message",target:box,message:"hello world!"});
+    box.onclick = function(){
+        var event = EventUtil.getEvent(event);
+        var target = EventUtil.getTarget(event);
+        alert(target == this);
+    };
+    var a = document.getElementById('baidu');
+    EventUtil.addHandler(window,'beforeunload',function(){
+        var message = ""
+        event.returnValue = message;
+        return message;
+    });
+    var myLink = document.getElementById('myLink');
+    EventUtil.addHandler(myLink,'click',function(event){
+        var event = EventUtil.getEvent(event);
+        var target = EventUtil.getTarget(event);
+        switch(target.id){
+            case "doSomething":
+                document.title = "change";
+                break;
+            case "goSomeWhere":
+                location.href = "http://www.baidu.com";
+                break;
+            case "sayHi":
+                alert("Hi");
+                break;
+        }
+    });
+</script>
+</body>
+</html>

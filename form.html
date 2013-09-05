@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <form>
+        <input type="text" value="" id="textBox">
+        <input type="submit" value="提交" name="submit-btn" id="submit-btn">
+    </form>
+    <script type="text/javascript" src="event.js"></script>
+    <script type="text/javascript">
+        var textBox = document.getElementById('textBox')
+        EventUtil.addHandler(textBox,'select',function(event){
+            if(typeof textBox.selectionStart == 'number'){
+                alert(textBox.value.substring(textBox.selectionStart,textBox.selectionEnd));
+            }else if(document.selection){
+                alert(document.selection.createRange().text);
+            }
+        });
+        EventUtil.addHandler(textBox,'keypress',function(event){
+            var event = EventUtil.getEvent(event);
+            var charCode = EventUtil.getCharCode(event)
+            if(!/\d/.test(String.fromCharCode(charCode)) && charCode > 9){
+                EventUtil.preventDefault(event);
+            }
+        });
+    </script>
+</body>
+</html>
